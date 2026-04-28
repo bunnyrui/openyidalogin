@@ -2,6 +2,7 @@
   "name": "yida-electron-self-login",
   "version": "2.0.0",
   "description": "宜搭 Windows 自助登录工具（V2 生产授权版：RS256 + pbkdf2）",
+  "author": "bunnyhan",
   "main": "main.js",
   "config": {
     "authServer": "",
@@ -9,14 +10,15 @@
   },
   "scripts": {
     "start": "electron .",
-    "prebuild:dir": "node scripts/validate-build-config.js",
-    "build:dir": "electron-builder --dir",
-    "prebuild:mac": "node scripts/validate-build-config.js",
-    "build:mac": "electron-builder --mac",
-    "prebuild:win": "node scripts/validate-build-config.js",
-    "build:win": "electron-builder --win portable",
-    "prebuild:linux": "node scripts/validate-build-config.js",
-    "build:linux": "electron-builder --linux"
+    "check:build-config": "node scripts/validate-build-config.js",
+    "build:dir": "node scripts/validate-build-config.js && electron-builder --dir",
+    "build:mac": "node scripts/validate-build-config.js && electron-builder --mac --x64 --arm64",
+    "build:mac:x64": "node scripts/validate-build-config.js && electron-builder --mac --x64",
+    "build:mac:arm64": "node scripts/validate-build-config.js && electron-builder --mac --arm64",
+    "build:win": "node scripts/validate-build-config.js && electron-builder --win portable --x64",
+    "build:win:x64": "node scripts/validate-build-config.js && electron-builder --win portable --x64",
+    "build:linux": "node scripts/validate-build-config.js && electron-builder --linux AppImage deb --x64",
+    "build:linux:x64": "node scripts/validate-build-config.js && electron-builder --linux AppImage deb --x64"
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -45,7 +47,11 @@
       "output": "dist"
     },
     "mac": {
-      "target": "dmg"
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "artifactName": "yida-self-login-${version}-${arch}.${ext}"
     },
     "win": {
       "target": [
@@ -59,7 +65,12 @@
       "artifactName": "yida-self-login-${version}-${arch}.${ext}"
     },
     "linux": {
-      "target": "AppImage"
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility",
+      "artifactName": "yida-self-login-${version}-${arch}.${ext}"
     }
   }
 }

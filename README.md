@@ -58,6 +58,26 @@ npm start
 
 开发环境可以继续用 `AUTH_SERVER` 环境变量覆盖；正式打包时如果未配置，客户端会拒绝激活，避免误连用户本机 `127.0.0.1`。
 
+## 三平台客户端打包
+
+```bash
+cd electron-client
+npm install
+
+# macOS: dmg + zip，分别输出 x64 / arm64
+npm run build:mac
+
+# Windows: portable x64
+npm run build:win
+
+# Linux: AppImage + deb x64
+npm run build:linux
+```
+
+跨平台交叉打包会受本机环境限制；最稳妥的发布方式是在 Windows、macOS、Linux 各自系统或 CI runner 上分别执行对应命令。
+
+仓库已提供 GitHub Actions 工作流：`.github/workflows/build-clients.yml`。在仓库 Secrets 中配置 `AUTH_SERVER` 和 `CLIENT_STORAGE_SECRET` 后，可手动触发或推送 `v*` tag 自动构建三平台产物。
+
 ## 生产前必须做
 
 ```bash

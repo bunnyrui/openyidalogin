@@ -1,0 +1,52 @@
+name: Build Electron Clients
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            script: build:mac
+            artifact: mac
+          - os: windows-latest
+            script: build:win
+            artifact: windows
+          - os: ubuntu-latest
+            script: build:linux
+            artifact: linux
+
+    defaults:
+      run:
+        working-directory: electron-client
+
+    env:
+      AUTH_SERVER: ${{ secrets.AUTH_SERVER }}
+      CLIENT_STORAGE_SECRET: ${{ secrets.CLIENT_STORAGE_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: electron-client/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run ${{ matrix.script }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yida-self-login-${{ matrix.artifact }}
+          path: electron-client/dist/*
+          if-no-files-found: error
