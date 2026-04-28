@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import time
+from typing import Optional
 from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
@@ -13,18 +16,18 @@ router = APIRouter(prefix="/api/v1/license", tags=["license"])
 
 class ActivateRequest(BaseModel):
     licenseKey: str = Field(..., min_length=4)
-    machineId: str | None = None
+    machineId: Optional[str] = None
     machineFingerprint: str = Field(..., min_length=16)
-    hostname: str | None = None
-    platform: str | None = None
-    arch: str | None = None
-    appVersion: str | None = None
+    hostname: Optional[str] = None
+    platform: Optional[str] = None
+    arch: Optional[str] = None
+    appVersion: Optional[str] = None
 
 
 class VerifyRequest(BaseModel):
     licenseToken: str
     machineFingerprint: str
-    appVersion: str | None = None
+    appVersion: Optional[str] = None
 
 
 def _client_ip(request: Request):

@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 import time
+from typing import Optional
 from fastapi import APIRouter, Depends, Header, HTTPException
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
@@ -22,15 +25,15 @@ class CreateLicenseRequest(BaseModel):
     productCode: str = "default"
     plan: str = "standard"
     maxDevices: int = Field(default=1, ge=1, le=100)
-    expireDays: int | None = Field(default=365, ge=1)
-    note: str | None = None
+    expireDays: Optional[int] = Field(default=365, ge=1)
+    note: Optional[str] = None
 
 
 class ExtendRequest(BaseModel):
     days: int = Field(..., ge=1)
 
 
-def require_admin(authorization: str | None = Header(default=None), db: Session = Depends(get_db)):
+def require_admin(authorization: Optional[str] = Header(default=None), db: Session = Depends(get_db)):
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="missing token")
     token = authorization.replace("Bearer ", "", 1)

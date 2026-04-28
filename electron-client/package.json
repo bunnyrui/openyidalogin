@@ -3,6 +3,10 @@
   "version": "2.0.0",
   "description": "宜搭 Windows 自助登录工具（V2 生产授权版：RS256 + pbkdf2）",
   "main": "main.js",
+  "config": {
+    "authServer": "",
+    "storageSecret": ""
+  },
   "scripts": {
     "start": "electron .",
     "build:dir": "electron-builder --dir",

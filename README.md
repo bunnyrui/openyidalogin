@@ -32,7 +32,7 @@ http://服务器IP:8000/admin
 默认账号：
 
 ```text
-admin / admin123456
+admin / 你在 license-server/.env 中设置的 ADMIN_PASSWORD
 ```
 
 ## 快速启动客户端开发版
@@ -45,10 +45,23 @@ $env:AUTH_SERVER="http://服务器IP:8000/api/v1"
 npm start
 ```
 
+## 客户端打包前必须配置
+
+编辑 `electron-client/package.json`：
+
+```json
+"config": {
+  "authServer": "https://你的授权域名/api/v1",
+  "storageSecret": "替换为随机长字符串"
+}
+```
+
+开发环境可以继续用 `AUTH_SERVER` 环境变量覆盖；正式打包时如果未配置，客户端会拒绝激活，避免误连用户本机 `127.0.0.1`。
+
 ## 生产前必须做
 
 ```bash
 ./scripts/generate_rs256_keys.sh
 ```
 
-然后重新部署服务端、重新打包客户端。不要把 `license-server/keys/private.pem` 发给客户。
+然后重新部署服务端、重新打包客户端。不要把 `license-server/keys/private.pem` 发给客户，也不要使用 `.env.example` 里的占位密码。

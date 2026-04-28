@@ -4,7 +4,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
-from app.config import APP_NAME, ADMIN_USERNAME, ADMIN_PASSWORD
+from app.config import APP_NAME, ADMIN_USERNAME, ADMIN_PASSWORD, ALLOW_INSECURE_DEFAULTS, INSECURE_ADMIN_PASSWORDS
 from app.database import init_db, SessionLocal, AdminUser, now_ts
 from app.utils.security import hash_password
 from app.utils.response import fail
@@ -33,6 +33,12 @@ def rate_limit_handler(request: Request, exc: RateLimitExceeded):
 
 @app.on_event("startup")
 def on_startup():
+    if not ALLOW_INSECURE_DEFAULTS and ADMIN_PASSWORD in INSECURE_ADMIN_PASSWORDS:
+        raise RuntimeError(
+            "Refusing to start with an insecure default ADMIN_PASSWORD. "
+            "Set a strong ADMIN_PASSWORD in license-server/.env."
+        )
+
     init_db()
     db = SessionLocal()
     try:

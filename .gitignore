@@ -1,1 +1,8 @@
 /.DS_Store
+.venv/
+license-server/.env
+license-server/data/
+license-server/keys/private.pem
+electron-client/dist/
+electron-client/node_modules/
+npm-debug.log*
