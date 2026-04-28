@@ -1,0 +1,13 @@
+services:
+  license-server:
+    build:
+      context: ./license-server
+    container_name: license-server
+    env_file:
+      - ./license-server/.env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./license-server/data:/app/data
+      - ./license-server/keys:/app/keys:ro
+    restart: unless-stopped

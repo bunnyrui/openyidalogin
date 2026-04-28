@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <title>宜搭自助登录</title>
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif; background: #f6f7f9; color: #17233d; }
+    .sidebar { box-sizing: border-box; width: 360px; min-height: 100vh; padding: 24px 22px; background: #ffffff; border-right: 1px solid #e7e9ef; }
+    h1 { font-size: 22px; margin: 0 0 10px; }
+    .sub { color: #626a7f; font-size: 13px; line-height: 1.6; margin-bottom: 18px; }
+    .card { border: 1px solid #e7e9ef; border-radius: 12px; padding: 14px; background: #fbfcff; margin-bottom: 14px; }
+    .card-title { font-weight: 700; margin-bottom: 8px; }
+    .steps { padding-left: 18px; margin: 8px 0 0; color: #394255; font-size: 13px; line-height: 1.7; }
+    .status { min-height: 70px; white-space: pre-wrap; word-break: break-all; font-size: 13px; line-height: 1.6; color: #394255; }
+    .success { color: #0a7f3f; font-weight: 700; }
+    .error { color: #bf1d1d; font-weight: 700; }
+    .info { color: #335cff; }
+    button { width: 100%; margin-top: 10px; height: 38px; border-radius: 8px; border: 1px solid #cfd5e3; background: #fff; cursor: pointer; font-size: 14px; }
+    button.primary { background: #245bdb; color: #fff; border-color: #245bdb; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    button.danger { color: #bf1d1d; }
+    .tip { font-size: 12px; color: #767f93; line-height: 1.6; margin-top: 14px; }
+    code { background: #eef2ff; padding: 2px 4px; border-radius: 4px; }
+    
+    #licenseKey { width: 100%; box-sizing: border-box; height: 38px; padding: 0 12px; border: 1px solid #cfd5e3; border-radius: 8px; font-size: 14px; margin-bottom: 10px; outline: none; transition: border-color 0.2s; }
+    #licenseKey:focus { border-color: #245bdb; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>宜搭自助登录</h1>
+    <div class="sub">右侧是内置 Chromium 浏览器，不依赖用户安装 Chrome。请使用钉钉扫码登录宜搭。</div>
+
+    <div id="auth-panel" class="card">
+      <div class="card-title">软件授权</div>
+      <div style="margin-top: 10px;">
+        <input type="text" id="licenseKey" placeholder="请输入授权码 (Key)" />
+        <button class="primary" id="verifyBtn">验证并激活</button>
+      </div>
+      <div id="auth-error" class="error" style="font-size: 12px; margin-top: 10px; display: none; white-space: pre-wrap;"></div>
+    </div>
+
+    <div id="main-panel" style="display: none;">
+      <div class="card">
+        <div class="card-title">操作步骤</div>
+        <ol class="steps">
+          <li>在右侧完成钉钉扫码登录。</li>
+          <li>进入宜搭工作台后，工具会自动生成登录态。</li>
+          <li>结果会保存到桌面 <code>yida-login-result</code>。</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <div class="card-title">当前状态</div>
+        <div id="status" class="status info">正在初始化...</div>
+      </div>
+
+      <button class="primary" id="openFolder">打开结果文件夹</button>
+      <button id="manualSave">手动保存当前 Cookie</button>
+      <button id="reload">重新打开登录页</button>
+      <button class="danger" id="clear">清空本工具会话</button>
+    </div>
+
+    <div class="tip">安全说明：本工具只使用内置浏览器会话，不读取用户系统 Chrome/Edge 的历史数据或 Cookie。</div>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>
