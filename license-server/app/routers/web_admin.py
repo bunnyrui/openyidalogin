@@ -58,7 +58,7 @@ ADMIN_HTML = r'''
 </head>
 <body>
   <header>
-    <h1>授权管理后台 <span class="muted" style="color:#d1d5db">V1.1</span></h1>
+    <h1>授权管理后台</h1>
     <div class="right">
       <span id="loginUser" class="muted" style="color:#d1d5db"></span>
       <button class="secondary" onclick="logout()">退出</button>

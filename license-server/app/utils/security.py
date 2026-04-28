@@ -2,7 +2,7 @@ import secrets
 import string
 from passlib.context import CryptContext
 
-# 最终版：不用 bcrypt，避免 Python 3.12 + bcrypt/passlib 兼容问题，以及 bcrypt 72 字节密码限制。
+# 使用 pbkdf2_sha256，避免 bcrypt 72 字节密码长度限制。
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 

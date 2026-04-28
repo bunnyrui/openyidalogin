@@ -1,4 +1,4 @@
-V2.0 production-ready baseline
-- RS256 license token
-- pbkdf2_sha256 admin password hash
-- Yida BrowserView cookie capture restored
+2.0.0
+- RS256 license token signing
+- pbkdf2_sha256 admin password hashing
+- Electron BrowserView cookie capture

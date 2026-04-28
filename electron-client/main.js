@@ -157,7 +157,7 @@ async function loadYidaPage() {
   timer = setInterval(checkAndSave, 2000);
 }
 
-// ================= 授权逻辑：V1.1 licenseToken =================
+// ================= 授权逻辑 =================
 async function checkSavedAuthAndLoadYida() {
   const local = checkLocalLicense();
 

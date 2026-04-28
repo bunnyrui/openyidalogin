@@ -84,4 +84,4 @@ npm run build:linux
 ./scripts/generate_rs256_keys.sh
 ```
 
-然后重新部署服务端、重新打包客户端。不要把 `license-server/keys/private.pem` 发给客户，也不要使用 `.env.example` 里的占位密码。
+然后重新部署服务端、重新打包客户端。不要把 `license-server/keys/private.pem` 发给客户，也不要直接使用 `.env.example` 中的示例密码。
