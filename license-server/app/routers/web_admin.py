@@ -75,7 +75,7 @@ ADMIN_HTML = r'''
       </div>
       <div style="margin-bottom:16px">
         <label>密码</label>
-        <input id="password" type="password" value="admin123456" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()" />
+        <input id="password" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter') login()" />
       </div>
       <button onclick="login()">登录</button>
     </section>
@@ -170,7 +170,12 @@ async function request(path, options = {}) {
   if (token) headers.Authorization = 'Bearer ' + token;
   const res = await fetch(API + path, Object.assign({}, options, {headers}));
   const data = await res.json().catch(() => ({code: res.status, msg: '响应不是 JSON'}));
-  if (data.code !== 0) throw new Error(data.msg || '请求失败');
+  if (res.status === 401 || res.status === 403) {
+    token = '';
+    localStorage.removeItem('admin_token');
+    showLogin();
+  }
+  if (!res.ok || data.code !== 0) throw new Error(data.msg || data.detail || '请求失败');
   return data.data || {};
 }
 function showLogin() {
